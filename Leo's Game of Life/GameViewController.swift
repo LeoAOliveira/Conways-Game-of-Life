@@ -12,19 +12,31 @@ import SceneKit
 
 class GameViewController: UIViewController {
 
+    var scene: SCNScene = SCNScene()
+    
+    var grid: Grid?
+    
+    var time: Float = 0.00
+    var timer: Timer?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
+        guard let gameOfLifeScene = SCNScene(named: "art.scnassets/gameOfLife.scn") else {
+            return
+        }
+        
+        scene = gameOfLifeScene
         
         // create and add a camera to the scene
         let cameraNode = SCNNode()
         cameraNode.camera = SCNCamera()
+        
         scene.rootNode.addChildNode(cameraNode)
         
         // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
+        cameraNode.position = SCNVector3(x: 0, y: 50, z: 0)
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -41,13 +53,23 @@ class GameViewController: UIViewController {
         scene.rootNode.addChildNode(ambientLightNode)
         
         // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
+        // let ship = scene.rootNode.childNode(withName: "box", recursively: true)!
+        
+        let worldOrigin = SCNNode()
+        worldOrigin.position = SCNVector3(0.0, 0.0, 0.0)
+        
+        let constraint = SCNLookAtConstraint(target: worldOrigin)
+        
+        constraint.isGimbalLockEnabled = true
+        cameraNode.constraints = [constraint]
         
         // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
+        // ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
         
         // retrieve the SCNView
-        let scnView = self.view as! SCNView
+        guard let scnView = self.view as? SCNView else {
+            return
+        }
         
         // set the scene to the view
         scnView.scene = scene
@@ -61,9 +83,50 @@ class GameViewController: UIViewController {
         // configure the view
         scnView.backgroundColor = UIColor.black
         
+        grid = Grid(sceneView: scnView)
+        
+        let startButton: UIButton = UIButton(frame: CGRect(x: CGFloat(20), y: CGFloat(50), width: CGFloat(70), height: CGFloat(30)))
+        
+        startButton.setTitle("Play", for: .normal)
+        
+        startButton.tintColor = UIColor.white
+        startButton.backgroundColor = #colorLiteral(red: 0.02378969267, green: 0.8090010285, blue: 0, alpha: 1)
+        startButton.layer.cornerRadius = 10.0
+        
+        scnView.addSubview(startButton)
+        
+        startButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
+        
         // add a tap gesture recognizer
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         scnView.addGestureRecognizer(tapGesture)
+    }
+    
+    @objc func playButtonPressed(_ sender: UIButton) {
+        
+        if sender.titleLabel?.text == "Play" {
+            
+            sender.setTitle("Stop", for: .normal)
+            sender.backgroundColor = #colorLiteral(red: 0.8720628619, green: 0, blue: 0, alpha: 1)
+            
+            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(counter), userInfo: nil, repeats: true)
+        
+        } else {
+            
+            sender.setTitle("Play", for: .normal)
+            sender.backgroundColor = #colorLiteral(red: 0.02378969267, green: 0.8090010285, blue: 0, alpha: 1)
+            
+            timer?.invalidate()
+        }
+    }
+    
+    @objc func counter() {
+        
+        guard let grid = self.grid else {
+            return
+        }
+        
+        grid.nextGeneration()
     }
     
     @objc
@@ -79,26 +142,11 @@ class GameViewController: UIViewController {
             // retrieved the first clicked object
             let result = hitResults[0]
             
-            // get its material
-            let material = result.node.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
+            guard let selectedCell = result.node as? Cell else {
+                return
             }
             
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
+            selectedCell.changeState()
         }
     }
     

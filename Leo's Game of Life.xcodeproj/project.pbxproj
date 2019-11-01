@@ -13,6 +13,9 @@
 		A70DF8E9236B516E001FBF14 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70DF8E7236B516E001FBF14 /* Main.storyboard */; };
 		A70DF8EB236B5170001FBF14 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A70DF8EA236B5170001FBF14 /* Assets.xcassets */; };
 		A70DF8EE236B5170001FBF14 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A70DF8EC236B5170001FBF14 /* LaunchScreen.storyboard */; };
+		A70DF8F6236B6AA6001FBF14 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8F5236B6AA6001FBF14 /* Cell.swift */; };
+		A70DF8F9236B7627001FBF14 /* CellStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */; };
+		A70DF8FB236CA068001FBF14 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8FA236CA068001FBF14 /* Grid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +27,9 @@
 		A70DF8EA236B5170001FBF14 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A70DF8ED236B5170001FBF14 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A70DF8EF236B5170001FBF14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A70DF8F5236B6AA6001FBF14 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellStateEnum.swift; sourceTree = "<group>"; };
+		A70DF8FA236CA068001FBF14 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +65,9 @@
 				A70DF8E1236B516E001FBF14 /* AppDelegate.swift */,
 				A70DF8E3236B516E001FBF14 /* art.scnassets */,
 				A70DF8E5236B516E001FBF14 /* GameViewController.swift */,
+				A70DF8FA236CA068001FBF14 /* Grid.swift */,
+				A70DF8F5236B6AA6001FBF14 /* Cell.swift */,
+				A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */,
 				A70DF8E7236B516E001FBF14 /* Main.storyboard */,
 				A70DF8EA236B5170001FBF14 /* Assets.xcassets */,
 				A70DF8EC236B5170001FBF14 /* LaunchScreen.storyboard */,
@@ -139,8 +148,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A70DF8F9236B7627001FBF14 /* CellStateEnum.swift in Sources */,
 				A70DF8E6236B516E001FBF14 /* GameViewController.swift in Sources */,
 				A70DF8E2236B516E001FBF14 /* AppDelegate.swift in Sources */,
+				A70DF8FB236CA068001FBF14 /* Grid.swift in Sources */,
+				A70DF8F6236B6AA6001FBF14 /* Cell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
