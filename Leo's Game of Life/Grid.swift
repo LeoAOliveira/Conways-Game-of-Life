@@ -15,11 +15,17 @@ class Grid {
     var cellsPositions: [Array<SCNVector3>] = []
     var nextStates: [Array<CellStateEnum>] = []
     
+    var generation: Int = 0
+    
     init(sceneView: SCNView) {
-        createGrid(onScene: sceneView)
+        createGrid(onScene: sceneView, isFirstGeneration: true)
     }
     
-    func createGrid(onScene sceneView: SCNView) {
+    func createGrid(onScene sceneView: SCNView, isFirstGeneration: Bool) {
+        
+        if isFirstGeneration == false {
+            checkGeneration()
+        }
         
         for x in -10 ..< 10 {
             
@@ -30,33 +36,35 @@ class Grid {
                 let cell = Cell()
                 cell.position.x = (Float(x) * 1.1) + 0.5
                 cell.position.z = (Float(z) * 1.1) + 0.5
-                cell.name = "i:\(x+10):\(z+10)"
+                cell.position.y = (Float(generation) * 1.1) + 0.5
                 groupOfCells.append(cell)
                 groupOfPositions.append(SCNVector3(cell.position.x, 0.0, cell.position.z))
-                sceneView.scene?.rootNode.addChildNode(cell)
+                
+                if isFirstGeneration == false {
+                    
+                    if gridOfCells[x+10][z+10].cellState != nextStates[x+10][z+10] {
+                        let lastCell = gridOfCells[x+10][z+10]
+                        lastCell.changeState()
+                    }
+                    
+                    if nextStates[x+10][z+10] == .alive {
+                        cell.changeColor(to: .red)
+                        sceneView.scene?.rootNode.addChildNode(cell)
+                    }
+                    
+                } else {
+                    sceneView.scene?.rootNode.addChildNode(cell)
+                }
             }
             
-            gridOfCells.append(groupOfCells)
-            cellsPositions.append(groupOfPositions)
-        }
-    }
-    
-    func nextGeneration() {
-        
-        checkGeneration()
-        
-        for x in 0 ..< gridOfCells.count {
-            
-            for z in 0 ..< gridOfCells.count {
-                
-                if gridOfCells[x][z].cellState != nextStates[x][z] {
-                    let cell = gridOfCells[x][z]
-                    cell.changeState()
-                }
+            if isFirstGeneration == true {
+                gridOfCells.append(groupOfCells)
+                cellsPositions.append(groupOfPositions)
             }
         }
         
         nextStates.removeAll()
+        generation += 1
     }
     
     func checkGeneration() {

@@ -126,7 +126,12 @@ class GameViewController: UIViewController {
             return
         }
         
-        grid.nextGeneration()
+        guard let scnView = self.view as? SCNView else {
+            return
+        }
+        scnView.scene = scene
+        
+        grid.createGrid(onScene: scnView, isFirstGeneration: false)
     }
     
     @objc

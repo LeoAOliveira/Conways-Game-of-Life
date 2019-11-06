@@ -31,12 +31,10 @@ class Cell: SCNNode {
         if cellState == .dead {
             cellState = .alive
             changeColor(to: .red)
-            self.runAction(SCNAction.move(to: SCNVector3(CGFloat(self.position.x), CGFloat(0.5), CGFloat(self.position.z)), duration: 0.5))
             
         } else if cellState == .alive {
             cellState = .dead
             changeColor(to: .white)
-            self.runAction(SCNAction.move(to: SCNVector3(CGFloat(self.position.x), CGFloat(0.0), CGFloat(self.position.z)), duration: 0.5))
             
         }
     }
