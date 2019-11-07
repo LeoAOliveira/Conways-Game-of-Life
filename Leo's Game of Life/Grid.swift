@@ -14,7 +14,6 @@ class Grid {
     var gridOfCells: [Array<Cell>] = []
     var cellsPositions: [Array<SCNVector3>] = []
     var nextStates: [Array<CellStateEnum>] = []
-    
     var generation: Int = 0
     
     init(sceneView: SCNView) {

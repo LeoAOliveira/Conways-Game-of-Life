@@ -13,30 +13,42 @@ import SceneKit
 class GameViewController: UIViewController {
 
     var scene: SCNScene = SCNScene()
-    
     var grid: Grid?
-    
-    var time: Float = 0.00
     var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // create a new scene
+        createScene()
+        
+        createLight()
+        
+        createCamera()
+        
+        guard let sceneView = self.view as? SCNView else {
+            return
+        }
+        
+        setUpScene(inSceneView: sceneView)
+        
+        createPlayButton(inSceneView: sceneView)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+        sceneView.addGestureRecognizer(tapGesture)
+    }
+    
+    // MARK: - Set up scene
+    
+    func createScene() {
+        
         guard let gameOfLifeScene = SCNScene(named: "art.scnassets/gameOfLife.scn") else {
             return
         }
         
         scene = gameOfLifeScene
-        
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 50, z: 0)
+    }
+    
+    func createLight() {
         
         // create and add a light to the scene
         let lightNode = SCNNode()
@@ -51,9 +63,18 @@ class GameViewController: UIViewController {
         ambientLightNode.light!.type = .ambient
         ambientLightNode.light!.color = UIColor.darkGray
         scene.rootNode.addChildNode(ambientLightNode)
+    }
+    
+    func createCamera() {
         
-        // retrieve the ship node
-        // let ship = scene.rootNode.childNode(withName: "box", recursively: true)!
+        // create and add a camera to the scene
+        let cameraNode = SCNNode()
+        cameraNode.camera = SCNCamera()
+        
+        scene.rootNode.addChildNode(cameraNode)
+        
+        // place the camera
+        cameraNode.position = SCNVector3(x: 0, y: 50, z: 0)
         
         let worldOrigin = SCNNode()
         worldOrigin.position = SCNVector3(0.0, 0.0, 0.0)
@@ -62,28 +83,21 @@ class GameViewController: UIViewController {
         
         constraint.isGimbalLockEnabled = true
         cameraNode.constraints = [constraint]
+    }
+    
+    func setUpScene(inSceneView sceneView: SCNView) {
         
-        // animate the 3d object
-        // ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
+        sceneView.scene = scene
+        sceneView.allowsCameraControl = true
+        sceneView.showsStatistics = true
+        sceneView.backgroundColor = UIColor.black
         
-        // retrieve the SCNView
-        guard let scnView = self.view as? SCNView else {
-            return
-        }
-        
-        // set the scene to the view
-        scnView.scene = scene
-        
-        // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
-        
-        // show statistics such as fps and timing information
-        scnView.showsStatistics = true
-        
-        // configure the view
-        scnView.backgroundColor = UIColor.black
-        
-        grid = Grid(sceneView: scnView)
+        grid = Grid(sceneView: sceneView)
+    }
+    
+    // MARK: - Play button and Timer
+    
+    func createPlayButton(inSceneView sceneView: SCNView) {
         
         let startButton: UIButton = UIButton(frame: CGRect(x: CGFloat(20), y: CGFloat(50), width: CGFloat(70), height: CGFloat(30)))
         
@@ -93,13 +107,9 @@ class GameViewController: UIViewController {
         startButton.backgroundColor = #colorLiteral(red: 0.02378969267, green: 0.8090010285, blue: 0, alpha: 1)
         startButton.layer.cornerRadius = 10.0
         
-        scnView.addSubview(startButton)
+        sceneView.addSubview(startButton)
         
         startButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
-        
-        // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        scnView.addGestureRecognizer(tapGesture)
     }
     
     @objc func playButtonPressed(_ sender: UIButton) {
@@ -126,24 +136,30 @@ class GameViewController: UIViewController {
             return
         }
         
-        guard let scnView = self.view as? SCNView else {
+        guard let sceneView = self.view as? SCNView else {
             return
         }
-        scnView.scene = scene
+        sceneView.scene = scene
         
-        grid.createGrid(onScene: scnView, isFirstGeneration: false)
+        grid.createGrid(onScene: sceneView, isFirstGeneration: false)
     }
     
-    @objc
-    func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+    // MARK: - Handle tap on cell
+    
+    @objc func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+        
         // retrieve the SCNView
-        let scnView = self.view as! SCNView
+        guard let sceneView = self.view as? SCNView else {
+            return
+        }
         
         // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
+        let p = gestureRecognize.location(in: sceneView)
+        let hitResults = sceneView.hitTest(p, options: [:])
+        
         // check that we clicked on at least one object
         if hitResults.count > 0 {
+            
             // retrieved the first clicked object
             let result = hitResults[0]
             
@@ -154,6 +170,8 @@ class GameViewController: UIViewController {
             selectedCell.changeState()
         }
     }
+    
+    // MARK: - Preferences
     
     override var shouldAutorotate: Bool {
         return true
