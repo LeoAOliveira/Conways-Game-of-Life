@@ -14,7 +14,6 @@ class GameViewController: UIViewController {
 
     var scene: SCNScene = SCNScene()
     var grid: Grid?
-    var timer: Timer?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,7 +30,7 @@ class GameViewController: UIViewController {
         
         setUpScene(inSceneView: sceneView)
         
-        createPlayButton(inSceneView: sceneView)
+        createNextButton(inSceneView: sceneView)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
         sceneView.addGestureRecognizer(tapGesture)
@@ -97,51 +96,24 @@ class GameViewController: UIViewController {
     
     // MARK: - Play button and Timer
     
-    func createPlayButton(inSceneView sceneView: SCNView) {
+    func createNextButton(inSceneView sceneView: SCNView) {
         
-        let startButton: UIButton = UIButton(frame: CGRect(x: CGFloat(20), y: CGFloat(50), width: CGFloat(70), height: CGFloat(30)))
+        let nextButton: UIButton = UIButton(frame: CGRect(x: CGFloat(UIScreen.main.bounds.width - 100), y: CGFloat(50), width: CGFloat(70), height: CGFloat(30)))
         
-        startButton.setTitle("Play", for: .normal)
+        nextButton.setTitle("Next", for: .normal)
         
-        startButton.tintColor = UIColor.white
-        startButton.backgroundColor = #colorLiteral(red: 0.02378969267, green: 0.8090010285, blue: 0, alpha: 1)
-        startButton.layer.cornerRadius = 10.0
+        nextButton.tintColor = UIColor.white
+        nextButton.backgroundColor = #colorLiteral(red: 0.1434306978, green: 0.461659897, blue: 0.8090010285, alpha: 1)
+        nextButton.layer.cornerRadius = 10.0
         
-        sceneView.addSubview(startButton)
+        sceneView.addSubview(nextButton)
         
-        startButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
     }
     
-    @objc func playButtonPressed(_ sender: UIButton) {
+    @objc func nextButtonPressed(_ sender: UIButton) {
         
-        if sender.titleLabel?.text == "Play" {
-            
-            sender.setTitle("Stop", for: .normal)
-            sender.backgroundColor = #colorLiteral(red: 0.8720628619, green: 0, blue: 0, alpha: 1)
-            
-            timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(counter), userInfo: nil, repeats: true)
-        
-        } else {
-            
-            sender.setTitle("Play", for: .normal)
-            sender.backgroundColor = #colorLiteral(red: 0.02378969267, green: 0.8090010285, blue: 0, alpha: 1)
-            
-            timer?.invalidate()
-        }
-    }
-    
-    @objc func counter() {
-        
-        guard let grid = self.grid else {
-            return
-        }
-        
-        guard let sceneView = self.view as? SCNView else {
-            return
-        }
-        sceneView.scene = scene
-        
-        grid.createGrid(onScene: sceneView, isFirstGeneration: false)
+        performSegue(withIdentifier: "nextSegue", sender: self)
     }
     
     // MARK: - Handle tap on cell
@@ -186,6 +158,25 @@ class GameViewController: UIViewController {
             return .allButUpsideDown
         } else {
             return .all
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+        if segue.identifier == "nextSegue"{
+
+            let destination = segue.destination as! ARViewController
+            
+            guard let gridOfCells = grid?.gridOfCells else {
+                return
+            }
+            
+            guard let nextStates = grid?.nextStates else {
+                return
+            }
+            
+            destination.gridOfCells = gridOfCells
+            destination.nextStates = nextStates
         }
     }
 

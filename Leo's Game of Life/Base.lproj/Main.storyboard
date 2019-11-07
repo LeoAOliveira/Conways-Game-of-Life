@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15509"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
                 <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Leo_s_Game_of_Life" customModuleProvider="target" sceneMemberID="viewController">
                     <sceneKitView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </sceneKitView>
+                    <connections>
+                        <segue destination="59L-Hq-jSv" kind="presentation" identifier="nextSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="flipHorizontal" id="JiX-IX-GIz"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="141" y="139"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Ufh-Px-aLX">
+            <objects>
+                <viewController id="59L-Hq-jSv" customClass="ARViewController" customModule="Leo_s_Game_of_Life" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Z1A-2s-PJL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dlD-WK-ofm">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </arscnView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="dlD-WK-ofm" firstAttribute="trailing" secondItem="BqJ-Gn-mCy" secondAttribute="trailing" id="B0Q-rD-UFh"/>
+                            <constraint firstItem="dlD-WK-ofm" firstAttribute="leading" secondItem="BqJ-Gn-mCy" secondAttribute="leading" id="DXr-qW-DOl"/>
+                            <constraint firstItem="dlD-WK-ofm" firstAttribute="top" secondItem="Z1A-2s-PJL" secondAttribute="top" id="T3A-Sn-WTA"/>
+                            <constraint firstAttribute="bottom" secondItem="dlD-WK-ofm" secondAttribute="bottom" id="fUY-9h-erL"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="BqJ-Gn-mCy"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="PF7-y2-KHd"/>
+                    <connections>
+                        <outlet property="sceneView" destination="dlD-WK-ofm" id="TFC-Ts-S0E"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FXK-lW-QHx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="864" y="139"/>
         </scene>
     </scenes>
 </document>

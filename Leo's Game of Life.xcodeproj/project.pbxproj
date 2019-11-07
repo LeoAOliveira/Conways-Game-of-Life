@@ -16,6 +16,7 @@
 		A70DF8F6236B6AA6001FBF14 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8F5236B6AA6001FBF14 /* Cell.swift */; };
 		A70DF8F9236B7627001FBF14 /* CellStateEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */; };
 		A70DF8FB236CA068001FBF14 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A70DF8FA236CA068001FBF14 /* Grid.swift */; };
+		A73AB75C2374A803003729AE /* ARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A73AB75B2374A803003729AE /* ARViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		A70DF8F5236B6AA6001FBF14 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellStateEnum.swift; sourceTree = "<group>"; };
 		A70DF8FA236CA068001FBF14 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		A73AB75B2374A803003729AE /* ARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +67,7 @@
 				A70DF8E1236B516E001FBF14 /* AppDelegate.swift */,
 				A70DF8E3236B516E001FBF14 /* art.scnassets */,
 				A70DF8E5236B516E001FBF14 /* GameViewController.swift */,
+				A73AB75B2374A803003729AE /* ARViewController.swift */,
 				A70DF8FA236CA068001FBF14 /* Grid.swift */,
 				A70DF8F5236B6AA6001FBF14 /* Cell.swift */,
 				A70DF8F8236B7627001FBF14 /* CellStateEnum.swift */,
@@ -151,6 +154,7 @@
 				A70DF8F9236B7627001FBF14 /* CellStateEnum.swift in Sources */,
 				A70DF8E6236B516E001FBF14 /* GameViewController.swift in Sources */,
 				A70DF8E2236B516E001FBF14 /* AppDelegate.swift in Sources */,
+				A73AB75C2374A803003729AE /* ARViewController.swift in Sources */,
 				A70DF8FB236CA068001FBF14 /* Grid.swift in Sources */,
 				A70DF8F6236B6AA6001FBF14 /* Cell.swift in Sources */,
 			);
