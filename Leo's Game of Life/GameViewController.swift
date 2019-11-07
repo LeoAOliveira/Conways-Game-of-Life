@@ -89,7 +89,6 @@ class GameViewController: UIViewController {
         
         sceneView.scene = scene
         sceneView.allowsCameraControl = true
-        sceneView.showsStatistics = true
         sceneView.backgroundColor = UIColor.black
         
         grid = Grid(sceneView: sceneView)
